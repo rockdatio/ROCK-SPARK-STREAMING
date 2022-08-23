@@ -1,7 +1,5 @@
 package com.rockdatio.structurestreaming
 
-//import kafka.KafkaSink
-
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -43,3 +41,9 @@ class StructureStreamingConsoleOutput extends Serializable {
   }
 }
 
+object StructureStreamingConsoleOutput {
+  def main(args: Array[String]): Unit = {
+    val a = new StructureStreamingConsoleOutput
+    a.start()
+  }
+}

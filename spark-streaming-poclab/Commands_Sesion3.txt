@@ -12,3 +12,5 @@ kafka-consumer-groups.bat --bootstrap-server localhost:9092 --describe --group s
 kafka-console-consumer --topic rawbadi --bootstrap-server localhost:9092 --from-beginning --property print.key=true --property key.separator="-" --partition 0
 kafka-console-consumer --topic rawbadi --bootstrap-server localhost:9092 --from-beginning --partition 0
 kafka-console-consumer --topic rawbadi --bootstrap-server localhost:9092
+
+kafka-console-consumer --topic rawbadi2 --bootstrap-server localhost:9092

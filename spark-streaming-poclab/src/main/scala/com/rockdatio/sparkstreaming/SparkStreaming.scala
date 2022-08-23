@@ -1,7 +1,5 @@
 package com.rockdatio.sparkstreaming
 
-//import kafka.KafkaSink
-
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.rdd.RDD
@@ -14,6 +12,8 @@ import org.apache.spark.streaming.{Durations, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
 class SparkStreaming extends Serializable {
+  System.setProperty("hadoop.home.dir", "c:\\winutil\\")
+
   val inputTopic: String = "rawbadi"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
@@ -26,17 +26,6 @@ class SparkStreaming extends Serializable {
     "auto.offset.reset" -> "earliest",
     "enable.auto.commit" -> (false: java.lang.Boolean)
   )
-  val kafkaProducerParams: Map[String, Object] = Map[String, Object](
-    "bootstrap.servers" -> "localhost:9092",
-    "key.serializer" -> "org.apache.kafka.common.serialization.StringSerializer",
-    "value.serializer" -> "org.apache.kafka.common.serialization.StringSerializer",
-    "security.protocol" -> "PLAINTEXT",
-    "group.id" -> "producer",
-    "spark.security.credentials.kafka.enabled" -> (false: java.lang.Boolean),
-    "enable.auto.commit" -> (false: java.lang.Boolean)
-  )
-
-  System.setProperty("hadoop.home.dir", "c:\\winutil\\")
   lazy val conf: SparkConf = new SparkConf()
     .setMaster("local[*]")
     .setAppName("streaming Test")
@@ -46,10 +35,9 @@ class SparkStreaming extends Serializable {
     .appName("streaming Test")
     .config(conf)
     .getOrCreate()
-  val sc: SparkContext = ss.sparkContext
-  val ssc = new StreamingContext(sc, Durations.seconds(1))
 
-  //  val kafkaSink: Broadcast[KafkaSink] = sc.broadcast(KafkaSink(kafkaProducerParams))
+  @transient val sc: SparkContext = ss.sparkContext
+  @transient val ssc = new StreamingContext(sc, Durations.seconds(1)) // @transient  an denote a field that shall not be serialized
 
   def start(): Unit = {
     val notifyDStream: DStream[String] = KafkaUtils
@@ -57,21 +45,13 @@ class SparkStreaming extends Serializable {
         ssc,
         PreferConsistent,
         Subscribe[String, String](Array(inputTopic), kafkaParams))
-      .map((record: ConsumerRecord[String, String]) => record.value)
+      .map(
+        (record: ConsumerRecord[String, String]) => record.value)
       .transform(
         (rdd: RDD[String]) => {
           if (!rdd.isEmpty()) {
             val result: DataFrame = ss.read
               .json(rdd)
-            result.show()
-            println("# Escribiendo to HDFS")
-            result
-              .write
-              .mode("append")
-              .option("header", "true")
-              .partitionBy("transaction_type")
-              .parquet(s"src/resources/datalke/${inputTopic}/transactions")
-
             result.toJSON.rdd
           } else rdd
         })
@@ -85,7 +65,6 @@ class SparkStreaming extends Serializable {
             records.foreach { message => {
               println("# Print Each message from RDD -> PARTITION  -> MESSAGE")
               println(message)
-              //              kafkaSink.value.sendMessage("outputtopic", message)
             }
             }
           }
