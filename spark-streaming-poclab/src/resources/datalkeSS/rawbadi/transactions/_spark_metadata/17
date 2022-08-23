@@ -1,3 +1,0 @@
-v1
-{"path":"file:///C:/workspace/docker-spark/data/workspace/ROCK-SPARK-STREAMING/spark-streaming-poclab/src/resources/datalkeSS/rawbadi/transactions/transaction_type=prestamos/part-00001-ec42c3b2-3d99-4517-87f6-513de12d698f.c000.snappy.parquet","size":1566,"isDir":false,"modificationTime":1661297455428,"blockReplication":1,"blockSize":33554432,"action":"add"}
-{"path":"file:///C:/workspace/docker-spark/data/workspace/ROCK-SPARK-STREAMING/spark-streaming-poclab/src/resources/datalkeSS/rawbadi/transactions/transaction_type=deposito/part-00002-20503ed0-cc01-4214-8a8e-9a6c26b2e361.c000.snappy.parquet","size":1575,"isDir":false,"modificationTime":1661297455427,"blockReplication":1,"blockSize":33554432,"action":"add"}
