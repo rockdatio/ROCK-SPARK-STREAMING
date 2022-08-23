@@ -14,7 +14,7 @@ docker
 
 # scala 3
 .tasty
-
+../artifacts
 # sbt
 project/project/
 project/target/

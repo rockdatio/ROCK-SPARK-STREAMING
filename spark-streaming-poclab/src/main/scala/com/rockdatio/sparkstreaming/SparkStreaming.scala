@@ -1,9 +1,8 @@
-package SparkStreamingDemo
+package com.rockdatio.sparkstreaming
 
 //import kafka.KafkaSink
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.streaming.dstream.DStream
@@ -13,7 +12,7 @@ import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.{Durations, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
-class DstremPocRock extends Serializable {
+class SparkStreaming extends Serializable {
   val inputTopic: String = "json-topic"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
@@ -98,9 +97,9 @@ class DstremPocRock extends Serializable {
 
 
 
-object DstremPocRock {
+object SparkStreaming {
   def main(args: Array[String]): Unit = {
-    val a = new DstremPocRock
+    val a = new SparkStreaming
     a.start()
   }
 }
