@@ -1,6 +1,7 @@
 package com.rockdatio.sparkstreaming
 
 //import kafka.KafkaSink
+
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.rdd.RDD
@@ -13,7 +14,7 @@ import org.apache.spark.streaming.{Durations, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
 class SparkStreaming extends Serializable {
-  val inputTopic: String = "json-topic"
+  val inputTopic: String = "rawbadi"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
     "bootstrap.servers" -> "localhost:9092",
@@ -48,7 +49,7 @@ class SparkStreaming extends Serializable {
   val sc: SparkContext = ss.sparkContext
   val ssc = new StreamingContext(sc, Durations.seconds(1))
 
-//  val kafkaSink: Broadcast[KafkaSink] = sc.broadcast(KafkaSink(kafkaProducerParams))
+  //  val kafkaSink: Broadcast[KafkaSink] = sc.broadcast(KafkaSink(kafkaProducerParams))
 
   def start(): Unit = {
     val notifyDStream: DStream[String] = KafkaUtils
@@ -63,13 +64,13 @@ class SparkStreaming extends Serializable {
             val result: DataFrame = ss.read
               .json(rdd)
             result.show()
-            println("a escribir")
+            println("# Escribiendo to HDFS")
             result
               .write
               .mode("append")
               .option("header", "true")
-              //                .partitionBy("transaction_date")
-              .parquet("src/resources/data/poc/delta/delta/tabla2=hoy")
+              .partitionBy("transaction_type")
+              .parquet(s"src/resources/datalke/${inputTopic}/transactions")
 
             result.toJSON.rdd
           } else rdd
@@ -82,8 +83,9 @@ class SparkStreaming extends Serializable {
           recordsOfPartition => {
             val records = recordsOfPartition.toList
             records.foreach { message => {
-              println("hola")
-//              kafkaSink.value.sendMessage("outputtopic", message)
+              println("# Print Each message from RDD -> PARTITION  -> MESSAGE")
+              println(message)
+              //              kafkaSink.value.sendMessage("outputtopic", message)
             }
             }
           }
@@ -94,7 +96,6 @@ class SparkStreaming extends Serializable {
     ssc.awaitTermination()
   }
 }
-
 
 
 object SparkStreaming {

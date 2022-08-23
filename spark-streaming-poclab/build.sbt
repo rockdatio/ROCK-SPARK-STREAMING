@@ -16,7 +16,9 @@ val sparkVersion = "2.4.1"
 val kafkaVersion = "2.4.0"
 val log4jVersion = "2.17.0"
 
+libraryDependencies += "org.apache.commons" % "commons-dbcp2" % "2.0.1"
 libraryDependencies ++= Seq(
+  "org.apache.commons" % "commons-pool2" % "2.0",
   "org.apache.spark" %% "spark-core" % sparkVersion,
   "org.apache.spark" %% "spark-sql" % sparkVersion,
   // streaming
@@ -36,6 +38,6 @@ libraryDependencies ++= Seq(
 scalacOptions ++= Seq("-deprecation", "-feature")
 
 assemblyMergeStrategy in assembly := {
-  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case PathList("META-INF", xs@_*) => MergeStrategy.discard
   case x => MergeStrategy.first
 }
