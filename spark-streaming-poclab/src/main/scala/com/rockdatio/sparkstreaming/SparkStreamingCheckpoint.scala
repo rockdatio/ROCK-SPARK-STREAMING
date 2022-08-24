@@ -57,13 +57,13 @@ class SparkStreamingCheckpoint extends Serializable {
         })
     notifyDStream.print()
 
-    ssc.checkpoint(s"src/resources/sparkstreaming${inputTopic}/checkpoint/transactions")
+    ssc.checkpoint(s"src/resources/sparkstreaming/${inputTopic}/checkpoint/transactions")
     ssc
   }
 
   def start(): Unit = {
     val context: StreamingContext = StreamingContext.getOrCreate(
-      s"src/resources/sparkstreaming${inputTopic}/checkpoint/transactions",
+      s"src/resources/sparkstreaming/${inputTopic}/checkpoint/transactions2",
       functionToCreateContext _)
     context.start()
     context.awaitTermination()
