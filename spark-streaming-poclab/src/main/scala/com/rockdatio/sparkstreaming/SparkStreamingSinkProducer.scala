@@ -15,7 +15,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 class SparkStreamingSinkProducer extends Serializable {
   val inputTopic: String = "rawbadi"
-  val outputTopic: String = "rawbadi2"
+  val outputTopic: String = "spark-sink"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
     "bootstrap.servers" -> "localhost:9092",

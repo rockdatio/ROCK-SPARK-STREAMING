@@ -14,7 +14,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 class SparkStreamingCheckpoint extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
-  val inputTopic: String = "rawbadi"
+  val inputTopic: String = "spark-topic"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
     "bootstrap.servers" -> "localhost:9092",
@@ -57,13 +57,13 @@ class SparkStreamingCheckpoint extends Serializable {
         })
     notifyDStream.print()
 
-    ssc.checkpoint(s"src/resources/sparkstreaming/${inputTopic}/checkpoint/transactions")
+    ssc.checkpoint(s"src/resources/sparkstreaming/${inputTopic}/checkpoint/transactions1")
     ssc
   }
 
   def start(): Unit = {
     val context: StreamingContext = StreamingContext.getOrCreate(
-      s"src/resources/sparkstreaming/${inputTopic}/checkpoint/transactions2",
+      s"src/resources/sparkstreaming/${inputTopic}/checkpoint/transactions3",
       functionToCreateContext _)
     context.start()
     context.awaitTermination()

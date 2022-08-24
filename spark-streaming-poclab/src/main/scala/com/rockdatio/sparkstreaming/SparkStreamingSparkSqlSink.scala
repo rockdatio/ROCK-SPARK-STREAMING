@@ -14,7 +14,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 class SparkStreamingSparkSqlSink extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
 
-  val inputTopic: String = "rawbadi"
+  val inputTopic: String = "spark-topic"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
     "bootstrap.servers" -> "localhost:9092",
@@ -82,6 +82,12 @@ class SparkStreamingSparkSqlSink extends Serializable {
 
     ssc.start()
     ssc.awaitTermination()
+  }
+}
+object SparkStreamingSparkSqlSink {
+  def main(args: Array[String]): Unit = {
+    val a = new SparkStreamingSparkSqlSink
+    a.start()
   }
 }
 

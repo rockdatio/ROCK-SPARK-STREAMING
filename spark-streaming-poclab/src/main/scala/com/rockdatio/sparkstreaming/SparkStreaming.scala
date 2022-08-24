@@ -26,6 +26,7 @@ class SparkStreaming extends Serializable {
     "auto.offset.reset" -> "earliest",
     "enable.auto.commit" -> (false: java.lang.Boolean)
   )
+
   lazy val conf: SparkConf = new SparkConf()
     .setMaster("local[*]")
     .setAppName("streaming Test")
@@ -46,12 +47,13 @@ class SparkStreaming extends Serializable {
         PreferConsistent,
         Subscribe[String, String](Array(inputTopic), kafkaParams))
       .map(
-        (record: ConsumerRecord[String, String]) => record.value)
+        (record: ConsumerRecord[String, String]) => record.value())
       .transform(
         (rdd: RDD[String]) => {
           if (!rdd.isEmpty()) {
             val result: DataFrame = ss.read
               .json(rdd)
+
             result.toJSON.rdd
           } else rdd
         })
@@ -69,7 +71,8 @@ class SparkStreaming extends Serializable {
             }
           }
         }
-      })
+      }
+      )
 
     ssc.start()
     ssc.awaitTermination()
