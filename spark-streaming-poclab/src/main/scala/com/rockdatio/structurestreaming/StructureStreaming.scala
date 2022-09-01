@@ -1,7 +1,5 @@
 package com.rockdatio.structurestreaming
 
-//import kafka.KafkaSink
-
 import org.apache.spark.sql.functions.{col, from_json}
 import org.apache.spark.sql.streaming.{StreamingQuery, Trigger}
 import org.apache.spark.sql.types.{StringType, StructField, StructType}

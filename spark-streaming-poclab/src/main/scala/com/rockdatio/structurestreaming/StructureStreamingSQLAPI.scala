@@ -8,21 +8,21 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 class StructureStreamingSQLAPI extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
-  val inputTopic = "rawbadi"
+
+  lazy val conf: SparkConf = new SparkConf()
+    .setMaster("local[*]")
+    .setAppName("streaming Test")
+
+  @transient lazy val ss: SparkSession = SparkSession
+    .builder()
+    .appName("streaming Test")
+    .config(conf)
+    .getOrCreate()
+  val sc: SparkContext = ss.sparkContext
 
   def start(): Unit = {
-    lazy val conf: SparkConf = new SparkConf()
-      .setMaster("local[*]")
-      .setAppName("streaming Test")
-
-    @transient lazy val ss: SparkSession = SparkSession
-      .builder()
-      .appName("streaming Test")
-      .config(conf)
-      .getOrCreate()
-    val sc: SparkContext = ss.sparkContext
     //    import ss.implicits._
-
+    val inputTopic = "rawbadi"
 
     val kafkaDF: DataFrame = ss.readStream
       .format("kafka")
@@ -56,13 +56,12 @@ class StructureStreamingSQLAPI extends Serializable {
       .outputMode("append")
       .format("parquet") // supports these formats : csv, json, orc, parquet
       .option("path", s"src/resources/datalkeSS/${inputTopic}/transactions")
-      .option("checkpointLocation", s"src/resources/datalkeSS/${inputTopic}/checkpoint/transactions2")
+      .option("checkpointLocation", s"src/resources/datalkeSS/${inputTopic}/checkpoint/transactions")
       .trigger(Trigger.ProcessingTime(1000)) // 1 segundo = 1000
       //      .trigger(Trigger.Once())
       .start()
 
     query.awaitTermination()
-    //    query.awaitTermination(terminationInterval)
   }
 }
 

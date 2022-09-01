@@ -100,4 +100,10 @@ class SparkStreamingSinkProducer extends Serializable {
   }
 }
 
+object SparkStreamingSinkProducer {
+  def main(args: Array[String]): Unit = {
+    val a = new SparkStreamingSinkProducer
+    a.start()
+  }
+}
 

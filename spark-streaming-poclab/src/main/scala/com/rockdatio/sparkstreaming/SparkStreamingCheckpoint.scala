@@ -63,7 +63,7 @@ class SparkStreamingCheckpoint extends Serializable {
 
   def start(): Unit = {
     val context: StreamingContext = StreamingContext.getOrCreate(
-      s"src/resources/sparkstreaming/${inputTopic}/checkpoint/transactions3",
+      s"src/resources/sparkstreaming/${inputTopic}/checkpoint/transactions1",
       functionToCreateContext _)
     context.start()
     context.awaitTermination()

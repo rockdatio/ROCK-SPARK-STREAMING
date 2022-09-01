@@ -3,30 +3,30 @@ package com.rockdatio.structurestreaming
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
 
-class StructureStreamingConsoleOutput extends Serializable {
+class StructureStreamingKafkaSourceConsoleOutput extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
+  lazy val conf: SparkConf = new SparkConf()
+    .setMaster("local[*]")
+    .setAppName("streaming Test")
+
+  @transient lazy val ss: SparkSession = SparkSession
+    .builder()
+    .appName("streaming Test")
+    .config(conf)
+    .getOrCreate()
+  val sc: SparkContext = ss.sparkContext
 
   def start(): Unit = {
-    lazy val conf: SparkConf = new SparkConf()
-      .setMaster("local[*]")
-      .setAppName("streaming Test")
-
-    @transient lazy val ss: SparkSession = SparkSession
-      .builder()
-      .appName("streaming Test")
-      .config(conf)
-      .getOrCreate()
-    val sc: SparkContext = ss.sparkContext
+    val inputTopic = "input1"
 
     val kafkaDF: DataFrame = ss.readStream
       .format("kafka")
       .option("kafka.bootstrap.servers", "0.0.0.0:9092")
       .option("startingOffsets", "earliest")
-      //      .option("endingOffsets", "latest")
       //      .option("groupIdPrefix", "spark-kafka-groupid-consumer2")
       .option("group.id", "processor-applications2") // use it with extreme caution, can cause unexpected behavior.
       .option("failOnDataLoss", "false") // use it with extreme caution, can cause unexpected behavior.
-      .option("subscribe", "rawbadi")
+      .option("subscribe", inputTopic)
       .load()
 
     //DEBUG MODE, IN CONSOLE.
@@ -41,9 +41,9 @@ class StructureStreamingConsoleOutput extends Serializable {
   }
 }
 
-object StructureStreamingConsoleOutput {
+object StructureStreamingKafkaSourceConsoleOutput {
   def main(args: Array[String]): Unit = {
-    val a = new StructureStreamingConsoleOutput
+    val a = new StructureStreamingKafkaSourceConsoleOutput
     a.start()
   }
 }

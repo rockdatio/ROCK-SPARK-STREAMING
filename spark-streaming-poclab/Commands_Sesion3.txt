@@ -1,3 +1,5 @@
+# CREACIÓN DE TOPICOS  PERSONALIZADO
+kafka-topics.bat --zookeeper localhost:2181 --topic output-topic --partitions 3 --replication-factor 1 --create
 kafka-topics.bat --zookeeper localhost:2181 --list
 kafka-topics.bat --zookeeper localhost:2181 --topic rawbadi --create --replication-factor 1 --partitions 3
 kafka-topics.bat --bootstrap-server localhost:9092 --topic rawbadi --describe
@@ -8,9 +10,13 @@ kafka-consumer-groups.bat --bootstrap-server localhost:9092 --describe --group t
 kafka-consumer-groups.bat --bootstrap-server localhost:9092 --describe --group spark-kafka-source-745f9e70-6ef9-4c4d-a5be-b5a97558fbbd--847792248-driver-0
 
 
-
+# CREACIÓN DE CONSUMIDOR
 kafka-console-consumer --topic rawbadi --bootstrap-server localhost:9092 --from-beginning --property print.key=true --property key.separator="-" --partition 0
 kafka-console-consumer --topic rawbadi --bootstrap-server localhost:9092 --from-beginning --partition 0
 kafka-console-consumer --topic rawbadi --bootstrap-server localhost:9092
+kafka-console-consumer --topic output-topic --bootstrap-server localhost:9092
 
 kafka-console-consumer --topic rawbadi2 --bootstrap-server localhost:9092
+
+# CREACIÓN DE PRODUCTORES
+kafka-console-producer --broker-list localhost:9092 --topic realtime-class
