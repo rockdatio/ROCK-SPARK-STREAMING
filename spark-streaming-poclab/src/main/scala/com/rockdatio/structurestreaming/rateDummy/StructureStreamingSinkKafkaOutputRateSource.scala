@@ -1,4 +1,4 @@
-package com.rockdatio.structurestreaming
+package com.rockdatio.structurestreaming.rateDummy
 
 import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.types.StringType

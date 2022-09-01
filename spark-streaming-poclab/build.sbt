@@ -5,14 +5,16 @@
 name := "spark-streaming-poclab"
 version := "1.0"
 
-scalaVersion := "2.11.10"
+//scalaVersion := "2.11.10"
+scalaVersion := "2.12.10"
 
 //lazy val root = (project in file("."))
 //  .settings(
 //    name := "spark-streaming-poclab"
 //  )
 
-val sparkVersion = "2.4.1"
+//val sparkVersion = "2.4.1"
+val sparkVersion = "3.0.0"
 val kafkaVersion = "2.4.0"
 val log4jVersion = "2.17.0"
 
@@ -24,7 +26,8 @@ libraryDependencies ++= Seq(
   // streaming
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
   // streaming-kafka
-  "org.apache.spark" % "spark-sql-kafka-0-10_2.11" % sparkVersion,
+//  "org.apache.spark" % "spark-sql-kafka-0-10_2.11" % sparkVersion,
+  "org.apache.spark" % "spark-sql-kafka-0-10_2.12" % sparkVersion,
   // low-level integrations
   "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
   // logging

@@ -1,4 +1,4 @@
-package com.rockdatio.structurestreaming
+package com.rockdatio.structurestreaming.rateDummy
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}

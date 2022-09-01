@@ -17,7 +17,7 @@ class StructureStreamingKafkaSourceConsoleOutput extends Serializable {
   val sc: SparkContext = ss.sparkContext
 
   def start(): Unit = {
-    val inputTopic = "input1"
+    val inputTopic = "rawbadi2"
 
     val kafkaDF: DataFrame = ss.readStream
       .format("kafka")
