@@ -20,7 +20,7 @@ class StructureStreamingRateTestingMode extends Serializable {
 
     val rateDF: DataFrame = ss.readStream
       .format("rate")
-      .option("rowsPerSecond", 3)
+      .option("rowsPerSecond", 10)
       .option("rampUpTime", 0)
       .option("numPartitions", 8)
       .load()
@@ -30,9 +30,9 @@ class StructureStreamingRateTestingMode extends Serializable {
 //    //DEBUG MODE, IN CONSOLE.
     val query = rateDF
       .writeStream
-//      .outputMode("append")
+      .outputMode("append")
 //      .outputMode("complete")
-      .outputMode("update")
+//      .outputMode("update")
       .format("console")
       .option("numRows", 20)
       .option("truncate", value = false)

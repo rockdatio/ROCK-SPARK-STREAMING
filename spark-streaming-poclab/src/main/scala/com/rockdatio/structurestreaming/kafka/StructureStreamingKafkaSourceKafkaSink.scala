@@ -1,5 +1,7 @@
 package com.rockdatio.structurestreaming.kafka
 
+import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.types.StringType
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -18,8 +20,8 @@ class StructureStreamingKafkaSourceKafkaSink extends Serializable {
 
 
   def start(): Unit = {
-    val inputTopic = "output-topic"
-    val outputTopic = "rawbadi-output"
+    val inputTopic = "salesforce2"
+    val outputTopic = "marketing"
 
     val kafkaDF: DataFrame = ss.readStream
       .format("kafka")
@@ -31,6 +33,14 @@ class StructureStreamingKafkaSourceKafkaSink extends Serializable {
       .option("subscribe", inputTopic)
       .load()
 
+
+    val cleanDF: DataFrame = kafkaDF
+      .select(
+        col("value").cast(StringType).alias("value") // we must send at least "value" column
+//        col("timestamp")
+      )
+      .select("value")
+
     //DEBUG MODE, IN CONSOLE.
     //    val query = kafkaDF
     //      .writeStream
@@ -38,7 +48,7 @@ class StructureStreamingKafkaSourceKafkaSink extends Serializable {
     //      .format("console")
     //      .start()
 
-    val query = kafkaDF.writeStream
+    val query = cleanDF.writeStream
       .queryName("kafkaWriter")
       .outputMode("append")
       .format("kafka") // determines that the kafka sink is used

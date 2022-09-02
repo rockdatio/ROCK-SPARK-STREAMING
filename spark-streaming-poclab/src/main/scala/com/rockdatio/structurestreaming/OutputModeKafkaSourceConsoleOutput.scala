@@ -20,7 +20,7 @@ class OutputModeKafkaSourceConsoleOutput extends Serializable {
   val sc: SparkContext = ss.sparkContext
 
   def start(): Unit = {
-    val inputTopic = "rawbadi2"
+    val inputTopic = "salesforce"
 
     val kafkaDF: DataFrame = ss.readStream
       .format("kafka")

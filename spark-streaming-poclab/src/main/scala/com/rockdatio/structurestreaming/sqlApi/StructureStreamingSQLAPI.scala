@@ -22,7 +22,7 @@ class StructureStreamingSQLAPI extends Serializable {
 
   def start(): Unit = {
     //    import ss.implicits._
-    val inputTopic = "rawbadi2"
+    val inputTopic = "salesforce2"
 
     val kafkaDF: DataFrame = ss.readStream
       .format("kafka")
@@ -34,6 +34,8 @@ class StructureStreamingSQLAPI extends Serializable {
       .option("subscribe", inputTopic)
       .load()
 
+    kafkaDF.printSchema()
+
     // JSON FUNCTION DESERIALIZATION
     val topicSchema = StructType(
       Array(
@@ -44,12 +46,17 @@ class StructureStreamingSQLAPI extends Serializable {
         StructField("amount", StringType),
         StructField("headerId", StringType)
       ))
-    // DEBUG MODE, IN CONSOLE.
-    val query: StreamingQuery = kafkaDF
+
+    val dfFinal: DataFrame = kafkaDF
+      .repartition(100)
       .select(col("value").cast(StringType).alias("json"))
       .select(from_json(col("json"), topicSchema) as "data")
       .select("data.*")
-      .repartition(200)
+
+    dfFinal.printSchema()
+
+    // DEBUG MODE, IN CONSOLE.
+    val query: StreamingQuery = dfFinal
       .writeStream
       .partitionBy("transaction_type")
       .outputMode("append")
