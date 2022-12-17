@@ -28,7 +28,7 @@ class ConsumptionValidation {
     println(df.count())
 
     println(df.rdd.getNumPartitions)
-    Thread.sleep(20000)
+//    Thread.sleep(20000)
   }
 }
 
