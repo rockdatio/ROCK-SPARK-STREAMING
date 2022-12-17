@@ -52,6 +52,18 @@ class SparkStreamingSinkProducer extends Serializable {
   @transient val ssc = new StreamingContext(sc, Durations.seconds(1)) // @transient  an denote a field that shall not be serialized
 
   def start(): Unit = {
+    //        val driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    //        val database = "shcl"
+    //        val url = "jdbc:sqlserver://sqlservershcl.database.windows.net:1433;databaseName=shcl"
+    //        val user = "T01419"
+    //        val password = "PERU.2021"
+    //
+    //        val sqlAzureSink: Broadcast[SqlAzureSink] = sc.broadcast(SqlAzureSink(
+    //          url,
+    //          driver,
+    //          database,
+    //          user,
+    //          password))
     val kafkaSink: Broadcast[KafkaSink] = sc.broadcast(KafkaSink(kafkaProducerParams))
 
     val notifyDStream: DStream[String] = KafkaUtils

@@ -21,9 +21,9 @@ class SparkStreaming extends Serializable {
     "key.deserializer" -> classOf[StringDeserializer].getCanonicalName,
     "value.deserializer" -> classOf[StringDeserializer].getCanonicalName,
     "security.protocol" -> "PLAINTEXT",
-    "group.id" -> "processor-applications-0.10.2",
+    "group.id" -> "spark-consumer-group-processor-applications-0.10.2",
     "spark.security.credentials.kafka.enabled" -> (false: java.lang.Boolean),
-    "auto.offset.reset" -> "earliest",
+    "auto.offset.reset" -> "latest",
     "enable.auto.commit" -> (false: java.lang.Boolean)
   )
 

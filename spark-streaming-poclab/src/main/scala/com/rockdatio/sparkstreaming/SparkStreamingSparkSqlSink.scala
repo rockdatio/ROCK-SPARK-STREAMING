@@ -1,7 +1,9 @@
 package com.rockdatio.sparkstreaming
 
+import com.rockdatio.sparkstreaming.singletonUtils.SqlAzureSink
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.streaming.dstream.DStream
@@ -14,7 +16,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 class SparkStreamingSparkSqlSink extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
 
-  val inputTopic: String = "spark-topic"
+  val inputTopic: String = "rawbadi"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
     "bootstrap.servers" -> "localhost:9092",
