@@ -14,14 +14,14 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 class SparkStreamingCheckpoint extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
-  val inputTopic: String = "rawbadi"
+  val inputTopic: String = "dmc-realtime"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
     "bootstrap.servers" -> "localhost:9092",
     "key.deserializer" -> classOf[StringDeserializer].getCanonicalName,
     "value.deserializer" -> classOf[StringDeserializer].getCanonicalName,
     "security.protocol" -> "PLAINTEXT",
-    "group.id" -> "processor-applications-0.10.2",
+    "group.id" -> "SparkStreamingCheckpoint",
     "spark.security.credentials.kafka.enabled" -> (false: java.lang.Boolean),
     "auto.offset.reset" -> "earliest",
     "enable.auto.commit" -> (false: java.lang.Boolean)
@@ -62,13 +62,13 @@ class SparkStreamingCheckpoint extends Serializable {
         })
     notifyDStream.print()
 
-    ssc.checkpoint(s"src/resources/sparkstreaming/${inputTopic}/checkpoint/1")
+    ssc.checkpoint(s"src/resources/sparkstreaming/${inputTopic}/checkpoint/2")
     ssc
   }
 
   def start(): Unit = {
     val context: StreamingContext = StreamingContext.getOrCreate(
-      s"src/resources/sparkstreaming/${inputTopic}/checkpoint/1",
+      s"src/resources/sparkstreaming/${inputTopic}/checkpoint/2",
       functionToCreateContext _)
     context.start()
     context.awaitTermination()

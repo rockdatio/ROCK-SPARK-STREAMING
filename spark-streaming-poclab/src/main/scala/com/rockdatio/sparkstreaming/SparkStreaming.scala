@@ -14,7 +14,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 class SparkStreaming extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
 
-  val inputTopic: String = "rawbadi"
+  val inputTopic: String = "dmc-partition-spark-demo"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
     "bootstrap.servers" -> "localhost:9092",
@@ -24,10 +24,16 @@ class SparkStreaming extends Serializable {
     // SSL ENABLE
     // "schema.registry.trustore" -> "trustore.jks",
     // "schema.registry.keystore" -> "trustore.jks",
-    "group.id" -> "spark-consumer-group-processor-applications-0.10.2",
+    "group.id" -> "spark-consumer-group-processor-applications",
     "spark.security.credentials.kafka.enabled" -> (false: java.lang.Boolean),
-    "auto.offset.reset" -> "latest",
+    "auto.offset.reset" -> "earliest",
     "enable.auto.commit" -> (false: java.lang.Boolean)
+  )
+
+  val partitionOffset: Map[String, Long] = Map[String, Long](
+    "0" -> 0,
+           "1" -> 0,
+           "2" -> 0
   )
 
   lazy val conf: SparkConf = new SparkConf()

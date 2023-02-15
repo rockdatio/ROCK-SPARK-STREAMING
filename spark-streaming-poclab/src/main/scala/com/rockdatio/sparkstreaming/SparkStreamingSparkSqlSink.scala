@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
@@ -16,14 +17,14 @@ import org.apache.spark.{SparkConf, SparkContext}
 class SparkStreamingSparkSqlSink extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
 
-  val inputTopic: String = "rawbadi"
+  val inputTopic: String = "dmc-realtime"
 
   val kafkaParams: Map[String, Object] = Map[String, Object](
     "bootstrap.servers" -> "localhost:9092",
     "key.deserializer" -> classOf[StringDeserializer].getCanonicalName,
     "value.deserializer" -> classOf[StringDeserializer].getCanonicalName,
     "security.protocol" -> "PLAINTEXT",
-    "group.id" -> "processor-applications-0.10.2",
+    "group.id" -> "SparkStreamingSparkSqlSink",
     "spark.security.credentials.kafka.enabled" -> (false: java.lang.Boolean),
     "auto.offset.reset" -> "earliest",
     "enable.auto.commit" -> (false: java.lang.Boolean)
@@ -55,7 +56,11 @@ class SparkStreamingSparkSqlSink extends Serializable {
             val result: DataFrame = ss.read
               .json(rdd)
             result.show()
+            result.printSchema()
             println("# Escribiendo to HDFS")
+
+            result.select(col("transaction_type"), col("transaction_type")).filter("amount <= 5000").show()
+
             result
               .write
               .mode("append")
@@ -67,20 +72,6 @@ class SparkStreamingSparkSqlSink extends Serializable {
           } else rdd
         })
     notifyDStream.print()
-
-    notifyDStream
-      .foreachRDD(rdd => {
-        rdd.foreachPartition {
-          recordsOfPartition => {
-            val records = recordsOfPartition.toList
-            records.foreach { message => {
-              println("# Print Each message from RDD -> PARTITION  -> MESSAGE")
-              println(message)
-            }
-            }
-          }
-        }
-      })
 
     ssc.start()
     ssc.awaitTermination()

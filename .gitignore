@@ -16,6 +16,10 @@ project/metals.sbt
 project/project/
 project/target/
 target/
+spark-streaming-poclab/.bsp
+spark-streaming-poclab/.idea
+spark-streaming-poclab/src/resources
+.idea
 
 # eclipse
 build/

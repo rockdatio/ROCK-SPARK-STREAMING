@@ -28,13 +28,12 @@ class MaxOffsetsPerTrigger extends Serializable {
     val kafkaDF: DataFrame = ss.readStream
       .format("kafka")
       .option("kafka.bootstrap.servers", "0.0.0.0:9092")
-      .option("maxOffsetsPerTrigger", maxtrigger.toLong)
+      .option("maxOffsetsPerTrigger", maxtrigger.toLong) // CON EL RATIO DE ESCRITURA PODEMOS DEFINIR CUANTOS MENSAJES PROCESAR POR SEGUNDO, SOLO FUNCIONA EN STREAMING Y NO EN BATCH. PERO REEMPLAZARÍA EL BATCH.
       .option("startingOffsets", "earliest")
-      .option("groupIdPrefix", "spark-kafka-groupid-consumer2")
+      .option("groupIdPrefix", "sparkmaxOffsetsPerTrigger-kafka-groupid-consumer")
       .option("failOnDataLoss", "false")
       .option("subscribe", "rawbadi")
       .load()
-
 
     // JSON FUNCTION DESERIALIZATION
     val topicSchema = StructType(

@@ -19,16 +19,21 @@ class ConsumptionValidation {
   val sc: SparkContext = ss.sparkContext
 
   def start(): Unit = {
-    val inputTopic = "rawbadi"
+    val inputTopic = "dmc-realtime"
 
     val df = ss
       .read
       .format("parquet")
-      .load(s"src/resources/datalke/${inputTopic}/transactions")
+      .load(s"src/resources/datalakeSS/${inputTopic}/transactions")
+      .repartition(180)
+      .cache()
+
+//    println(df.repartition(180).rdd.getNumPartitions)
+//    df.show()
     println(df.count())
 
-    println(df.rdd.getNumPartitions)
-//    Thread.sleep(20000)
+//    println(df.rdd.getNumPartitions)
+    Thread.sleep(20000)
   }
 }
 

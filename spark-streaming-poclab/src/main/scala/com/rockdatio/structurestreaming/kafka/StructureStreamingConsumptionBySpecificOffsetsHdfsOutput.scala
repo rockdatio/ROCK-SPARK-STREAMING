@@ -20,19 +20,16 @@ class StructureStreamingConsumptionBySpecificOffsetsHdfsOutput extends Serializa
   val sc: SparkContext = ss.sparkContext
 
   def start(): Unit = {
-    val inputTopic = "inputTopic"
-    val outputTopic = "inputTopic"
+    val inputTopic = "dmc-realtime"
 
     val kafkaDF: DataFrame = ss.readStream
       .format("kafka")
       .option("kafka.bootstrap.servers", "0.0.0.0:9092")
-      //      .option("startingOffsets", """{"rawbadi": {"0":-2, "1":-2, "2":-2}}""")
-      .option("startingOffsets", """{"rawbadi": {"0":3000000, "1":3000000, "2":3000000}}""")
+      .option("startingOffsets", """{"dmc-realtime": {"0":12000, "1":12000, "2":12000}}""")
       .option("groupIdPrefix", "spark-kafka-groupid-consumer2")
-      //      .option("group.id", "processor-applications2") // use it with extreme caution, can cause unexpected behavior.
       .option("failOnDataLoss", "false") // use it with extreme caution, can cause unexpected behavior.
       //      .option("startingOffsetsByTimestamp", """{"cloud-glb-shcl-marketing-campaign-debitflag":{"0": -2}}""")
-      .option("subscribe", "rawbadi")
+      .option("subscribe", inputTopic)
       .load()
 
     // JSON FUNCTION DESERIALIZATION
@@ -65,7 +62,6 @@ class StructureStreamingConsumptionBySpecificOffsetsHdfsOutput extends Serializa
       .start()
 
     query.awaitTermination()
-    //    query.awaitTermination(terminationInterval)
   }
 }
 

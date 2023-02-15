@@ -15,7 +15,7 @@ class KafkaSink(createProducer: () => KafkaProducer[String, String]) extends Ser
 
 object KafkaSink {
 
-  def apply(config: Map[String, Object]): KafkaSink = {
+  def apply(): KafkaSink = {
     val props = new Properties()
     props.put("bootstrap.servers", "localhost:9092")
     props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")

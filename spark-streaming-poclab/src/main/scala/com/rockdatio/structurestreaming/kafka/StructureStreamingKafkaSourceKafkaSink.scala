@@ -60,7 +60,6 @@ class StructureStreamingKafkaSourceKafkaSink extends Serializable {
       .start()
 
     query.awaitTermination()
-    //    query.awaitTermination(terminationInterval)
   }
 }
 

@@ -36,7 +36,7 @@ class SqlAzureSink(getMysqlConnection: () => Connection, database: String) exten
     new java.sql.Date(currentDate.getTime)
   }
 
-  def findByTarjeta2(table: String, schema: String, nrotarjeta: String): Boolean = {
+  def findByTarjeta(table: String, schema: String, nrotarjeta: String): Boolean = {
     val statement4 = clientSql.createStatement()
     val result: ResultSet = statement4.executeQuery(s"SELECT delivered FROM [${schema}].${table} where debit_card_number = ${'"'}${nrotarjeta}${'"'}")
     //    statement4.close()

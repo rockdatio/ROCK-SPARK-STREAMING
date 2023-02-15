@@ -6,7 +6,7 @@ import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
 
-class StructureStreaming extends Serializable {
+class SchemaRegistryIntegration extends Serializable {
   System.setProperty("hadoop.home.dir", "c:\\winutil\\")
 
   def start(): Unit = {
@@ -78,9 +78,9 @@ class StructureStreaming extends Serializable {
   }
 }
 
-object StructureStreaming {
+object SchemaRegistryIntegration {
   def main(args: Array[String]): Unit = {
-    val a = new StructureStreaming
+    val a = new SchemaRegistryIntegration
     a.start()
   }
 }
