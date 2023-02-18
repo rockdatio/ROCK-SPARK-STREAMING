@@ -9,8 +9,6 @@ project/metals.sbt
 .metals
 data/
 docker
-src/resources
-src/resources/*
 # vs code
 .vscode
 
