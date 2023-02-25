@@ -19,25 +19,27 @@ class rddUnionIntersection {
       .getOrCreate()
     val sc: SparkContext = ss.sparkContext
 
-    val rdd1 = sc.parallelize(Seq(
+    val rddProduct: RDD[(String, String)] = sc.parallelize(Seq(
       ("product1", "category1"),
       ("product2", "category2"),
       ("product3", "category3"),
       ("product4", "category4"),
     ))
-    val rdd2 = sc.parallelize(Seq(
-      ("customer1", "product1", 5),
-      ("customer1", "product2", 6),
-      ("customer2", "product3", 2),
-      ("customer2", "product4", 9),
+
+    val rddCustomer: RDD[(String, String)] = sc.parallelize(Seq(
+      ("customer1", "product1"),
+      ("customer1", "product2"),
+      ("customer2", "product3"),
+      ("customer2", "product4"),
       ("product4", "category4")
     ))
 
     // PARA USAR EL UNION LOS RDDs deben ser iguales y del mismo tipo de dato
-    val x = rdd1.union(rdd2).collect()
-    x.foreach(println(_))
-    val y = rdd1.intersection(rdd2).collect()
-    y.foreach(println(_))
+    val resultado: Array[(String, String)] = rddProduct.union(rddCustomer).collect()
+//    resultado.foreach(println(_))
+
+    val resultado2 = rddProduct.intersection(rddCustomer).collect()
+    resultado2.foreach(println(_))
 
 
     Thread.sleep(20000)

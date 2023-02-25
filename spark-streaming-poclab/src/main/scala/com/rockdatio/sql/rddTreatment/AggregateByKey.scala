@@ -49,7 +49,7 @@ class AggregateByKey {
     val aggrRDD = carsRDD.map(t => (t._1, (t._2, t._3))).aggregateByKey(zeroVal)(seqOp, combOp)
     aggrRDD.collect foreach println
 
-    Thread.sleep(20000)
+    Thread.sleep(200000)
   }
 }
 

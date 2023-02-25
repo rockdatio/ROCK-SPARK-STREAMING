@@ -14,7 +14,7 @@ scalaVersion := "2.12.10"
 //  )
 
 //val sparkVersion = "2.4.1"
-val sparkVersion = "3.0.0"
+val sparkVersion = "3.2.2"
 val kafkaVersion = "2.4.0"
 val log4jVersion = "2.17.0"
 

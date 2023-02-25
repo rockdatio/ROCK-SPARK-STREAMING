@@ -20,35 +20,46 @@ class rddJoin {
       .appName("streaming Test")
       .config(conf)
       .getOrCreate()
+
     val sc: SparkContext = ss.sparkContext
 
-    val rdd1 = sc.parallelize(Seq(
+    val rdd1: RDD[Products] = sc.parallelize(Seq(
       Products("product1", "category1"),
       Products("product2", "category2"),
       Products("product3", "category3"),
       Products("product4", "category4")
     ))
-    val rdd2 = sc.parallelize(Seq(
+
+    val rdd2: RDD[Customer] = sc.parallelize(Seq(
       Customer("customer1", "product1", 5),
       Customer("customer1", "product2", 6),
       Customer("customer2", "product3", 2),
       Customer("customer2", "product4", 9)
     ))
 
-    val transformedRDD1: RDD[(String, Products)] = rdd1.map(prod => (prod.productId, prod))
-    val transformedRDD2: RDD[(String, Customer)] = rdd2.map(customer => (customer.productId, customer))
+    val transformedRDD1: RDD[(String, Products)] = rdd1
+      .map(
+        productos =>
+          (productos.productId, productos) //OBTENGO UN TUPLA LLAVE VALOR (PRODUCTID, PRODUCTOS)
+      )
+
+    val transformedRDD2: RDD[(String, Customer)] = rdd2
+      .map(
+        customer =>
+          (customer.productId, customer)
+      )
 
 
+    val joinedFinal: RDD[(String, (Products, Customer))] = transformedRDD1.join(transformedRDD2)
 
-    val joined: RDD[(String, (Products, Customer))] = transformedRDD1
-      .join(transformedRDD2)
+    val cleanedJoined: RDD[(String, String, String, Int)] = joinedFinal
+      .map(x =>
+        (x._1, x._2._1.category, x._2._2.customerId,x._2._2.quantity)
+      )
 
-    val cleanedJoined: RDD[(String, String, Int)] = joined
-      .map(x => (x._2._2.customerId, x._2._1.category, x._2._2.quantity))
+    cleanedJoined.collect().foreach(println(_))
 
-    cleanedJoined.saveAsTextFile(s"src/resources/output/data_join/")
-
-    Thread.sleep(20000)
+    Thread.sleep(2000000)
   }
 }
 
