@@ -1,3 +1,5 @@
+*.class
+*.log
 # bloop and metals
 .bloop
 .bsp
@@ -5,22 +7,19 @@
 # metals
 project/metals.sbt
 .metals
-
+data/
+docker
 # vs code
 .vscode
 
 # scala 3
 .tasty
-
+../.idea
 # sbt
 project/project/
 project/target/
 target/
-spark-streaming-poclab/.bsp
-spark-streaming-poclab/.idea
-spark-streaming-poclab/src/resources
-.idea
-
+out/
 # eclipse
 build/
 .classpath
@@ -36,6 +35,7 @@ bin/
 *.ipr
 *.iws
 .idea
+.bsp
 
 # mac
 .DS_Store
@@ -45,5 +45,5 @@ bin/
 .scala_dependencies
 .cache-main
 
-# general
+#general
 *.class
