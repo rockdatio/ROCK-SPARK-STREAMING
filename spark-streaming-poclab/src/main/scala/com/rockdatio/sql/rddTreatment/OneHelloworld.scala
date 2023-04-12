@@ -42,7 +42,9 @@ class OneHelloworld {
       .getOrCreate()
     val sc: SparkContext = ss.sparkContext
 
-    val lines: RDD[String] = sc.textFile(s"src/resources/data/ml-100k/u.data", 180)
+    val lines: RDD[String] = sc.textFile(s"src/resources/data/ml-100k/u.data", 10000)
+    lines.repartition(180)
+
     println(lines.getNumPartitions)
 
     val ratings: RDD[String] = lines.map((row: String) => {

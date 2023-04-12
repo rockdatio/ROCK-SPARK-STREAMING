@@ -81,10 +81,10 @@ class rddTransformation {
     // DE ENFRENTARSE A GRANDES PROYECTOS
     // NOS VEMOS EN UN SIGUIENTE CURSO
 
-//    val result3 = lines.map(row => row.split("\t")(2)).map((row: String) => (row, 1L)).groupByKey()
-//    val sumTotal = result3.mapValues((f: Iterable[Long]) => f.sum).collect()
-//    println("groupbykey")
-//    sumTotal.foreach(println(_))
+    val result3 = lines.map(row => row.split("\t")(2)).map((row: String) => (row, 1L)).groupByKey()
+    val sumTotal = result3.mapValues((f: Iterable[Long]) => f.sum).collect()
+    println("groupbykey")
+    sumTotal.foreach(println(_))
 
 
     //
